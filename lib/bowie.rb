@@ -11,7 +11,9 @@ module Bowie
   end
 
   def self.list
-    @songs
+    @songs.each_key do |song|
+      puts @songs[song]['name'] + ': ' + @songs[song]['description']
+    end
   end
 
 end
