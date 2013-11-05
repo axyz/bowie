@@ -1,5 +1,14 @@
 #!/usr/bin/env ruby
 
 require 'bowie'
+require 'thor'
 
-Bowie.list
+class BowieCLI < Thor
+  desc "command song", "bowie sing that song"
+
+  def install(song)
+    Bowie.install(song)
+  end
+end
+
+BowieCLI.start(ARGV)
