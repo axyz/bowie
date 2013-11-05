@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Bowie::VERSION
   spec.authors       = ["Andrea Moretti"]
   spec.email         = ["axyzxp@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{A package manager for github's projects}
+  spec.summary       = %q{The White Duke rules them all}
   spec.homepage      = ""
   spec.license       = "MIT"
 
