@@ -4,10 +4,15 @@ require 'bowie'
 require 'thor'
 
 class BowieCLI < Thor
-  desc "command song", "bowie sing that song"
-
+  
+  desc "install song", "install the selected package"
   def install(song)
     Bowie.install(song)
+  end
+
+  desc "uninstall song", "remove the selected package"
+  def uninstall(song)
+    Bowie.uninstall(song)
   end
 end
 
