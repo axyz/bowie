@@ -14,11 +14,9 @@ module Bowie
     @songs
   end
 
-  # Return a printable list of available packages TO-DO: substitue puts in order to return an array
-  def self.list
-    @songs.each_key do |song|
-      puts @songs[song]['name'] + ': ' + @songs[song]['description']
-    end
+  # Return a printable list of available packages matching the [query]
+  def self.search(query)
+    @songs.select { |el| /.*#{query}.*/ =~ el }
   end
 
   # Install the selected [song] in the bowie_songs directory

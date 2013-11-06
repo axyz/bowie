@@ -14,6 +14,12 @@ class BowieCLI < Thor
   def uninstall(song)
     Bowie.uninstall(song)
   end
+
+  desc "search song", "list all availables packages matching [song]"
+  def search(song)
+    results = Bowie.search(song)
+    results.each { |key, values| puts "#{values['name']}:\n  #{values['description']}" }
+  end
 end
 
 BowieCLI.start(ARGV)
