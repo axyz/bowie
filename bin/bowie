@@ -4,6 +4,10 @@ require 'bowie'
 require 'thor'
 
 class BowieCLI < Thor
+
+  Bowie.get_songs
+  Bowie.get_local_songs
+  Bowie.get_local_lyrics
   
   desc "install song", "install the selected package"
   def install(song)
