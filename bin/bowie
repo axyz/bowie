@@ -10,6 +10,11 @@ class BowieCLI < Thor
     Bowie.install(song)
   end
 
+  desc "update song", "update the selected package"
+  def update(song)
+    Bowie.update(song)
+  end
+
   desc "uninstall song", "remove the selected package"
   def uninstall(song)
     Bowie.uninstall(song)

@@ -3,6 +3,7 @@ require "yaml"
 require "open-uri"
 require "fileutils"
 require "git"
+require "logger"
 
 module Bowie
   
@@ -35,6 +36,16 @@ module Bowie
     path = "bowie_songs/#{name}"
 
     FileUtils.rm_rf(path) # use remove_entry_secure for security reasons?
+  end
+
+  # Update the selected package
+  def self.update(song)
+    name = @songs[song]['name']
+    path = "bowie_songs/#{name}"
+
+    g = Git.open(path, :log => Logger.new(STDOUT))
+    g.reset_hard('HEAD')
+    g.pull
   end
 
 end
