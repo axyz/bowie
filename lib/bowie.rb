@@ -55,41 +55,62 @@ module Bowie
   end
 
   # Install the selected [song] in the bowie_songs directory
-  def self.install(song)
+  def self.install(*songs)
     @songs = self.get_songs
     @local_songs = self.get_local_songs
-    name = @songs[song]['name']
-    url = @songs[song]['url']
-    path = "bowie_songs/#{name}"
 
-    FileUtils.mkdir_p(path)
-    Git.clone(url, path)
+    if songs.length > 0
+      songs.each do |song|
+        name = @songs[song]['name']
+        url = @songs[song]['url']
+        path = "bowie_songs/#{name}"
 
-    @local_songs.push song
-    File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
+        FileUtils.mkdir_p(path)
+        Git.clone(url, path)
+
+        unless @local_songs.include? song
+          @local_songs.push song
+        end
+        File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
+      end
+    else
+      @local_songs.each {|song| self.install(song)}
+    end
   end
 
   # Remove the selected package
-  def self.uninstall(song)
+  def self.uninstall(*songs)
     @songs = self.get_songs
     @local_songs = self.get_local_songs
-    name = @songs[song]['name']
-    path = "bowie_songs/#{name}"
 
-    FileUtils.rm_rf(path) # use remove_entry_secure for security reasons?
+    songs.each do |song|
+      name = @songs[song]['name']
+      path = "bowie_songs/#{name}"
 
-    @local_songs.delete song
-    File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
+      FileUtils.rm_rf(path) # use remove_entry_secure for security reasons?
+
+      @local_songs.delete song
+      File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
+    end
   end
 
   # Update the selected package
-  def self.update(song)
-    name = @songs[song]['name']
-    path = "bowie_songs/#{name}"
+  def self.update(*songs)
+    @songs = self.get_songs
+    @local_songs = self.get_local_songs
 
-    g = Git.open(path, :log => Logger.new(STDOUT))
-    g.reset_hard('HEAD')
-    g.pull
+    if songs.length > 0
+      songs.each do |song|
+        name = @songs[song]['name']
+        path = "bowie_songs/#{name}"
+
+        g = Git.open(path, :log => Logger.new(STDOUT))
+        g.reset_hard('HEAD')
+        g.pull
+      end
+    else
+      @local_songs.each {|song| self.update(song)}
+    end
   end
 
 end

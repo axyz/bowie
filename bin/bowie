@@ -10,18 +10,18 @@ class BowieCLI < Thor
   Bowie.get_local_lyrics
   
   desc "install song", "install the selected package"
-  def install(song)
-    Bowie.install(song)
+  def install(*songs)
+    Bowie.install(*songs)
   end
 
   desc "update song", "update the selected package"
-  def update(song)
-    Bowie.update(song)
+  def update(*songs)
+    Bowie.update(*songs)
   end
 
   desc "uninstall song", "remove the selected package"
-  def uninstall(song)
-    Bowie.uninstall(song)
+  def uninstall(*songs)
+    Bowie.uninstall(*songs)
   end
 
   desc "search song", "list all availables packages matching [song]"
