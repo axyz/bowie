@@ -1,4 +1,5 @@
 require "bowie/version"
+require "bowie/utils"
 require "yaml"
 require "open-uri"
 require "fileutils"
