@@ -1,7 +1,8 @@
 module Bowie
+  module Utils
 
     # Return an array with all the direcotry inside bowye_songs
-    def get_songs_dirs
+    def self.get_songs_dirs
       result = []
       Dir.foreach('bowie_songs') do |el|
         unless (el == "." or el == ".." or el == "lyrics.yml")
@@ -11,4 +12,5 @@ module Bowie
       result
     end
 
+  end
 end

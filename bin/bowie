@@ -29,6 +29,11 @@ class BowieCLI < Thor
     results = Bowie.search(song)
     results.each { |key, values| puts "#{values['name']}:\n  #{values['description']}" }
   end
+
+  desc "prune", "remove all the packages not included in songs.yml"
+  def prune
+    Bowie.prune
+  end
 end
 
 BowieCLI.start(ARGV)

@@ -114,4 +114,15 @@ module Bowie
     end
   end
 
+  # Remove all the packages not included in songs.yml
+  def self.prune
+    @local_songs = self.get_local_songs
+    
+    Utils.get_songs_dirs.each do |dir|
+      unless @local_songs.include? dir
+        FileUtils.rm_rf("bowie_songs/#{dir}")
+      end
+    end
+  end
+
 end
