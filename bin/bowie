@@ -34,6 +34,12 @@ class BowieCLI < Thor
   def prune
     Bowie.prune
   end
+
+  desc "list", "list all the installed packages"
+  def list
+    results = Bowie.list
+    results.each { |key, values| puts "#{values['name']}:\n  #{values['description']}" }
+  end
 end
 
 BowieCLI.start(ARGV)

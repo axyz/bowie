@@ -125,4 +125,12 @@ module Bowie
     end
   end
 
+  # List all the installed packages
+  def self.list
+    @local_songs = self.get_local_songs
+    @songs = self.get_songs
+
+    @songs.select {|el| @local_songs.include? el}
+  end
+
 end
