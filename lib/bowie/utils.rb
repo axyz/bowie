@@ -12,5 +12,15 @@ module Bowie
       result
     end
 
+    # Parse the name of a package in the form name#version
+    def self.parse_song_name(s)
+      s.split("#")[0]
+    end
+
+    # Parse the version of a package in the form name#version
+    def self.parse_song_version(s)
+      s.split("#")[1]
+    end
+
   end
 end
