@@ -1,3 +1,5 @@
+require "git"
+
 module Bowie
   module Utils
 
@@ -20,6 +22,15 @@ module Bowie
     # Parse the version of a package in the form name#version
     def self.parse_song_version(s)
       s.split("#")[1]
+    end
+
+    def self.get_git_tags(path)
+      result = Array.new
+      g = Git.open(path)
+      g.tags.each do |tag|
+        result.push tag.name
+      end
+      return result
     end
 
   end

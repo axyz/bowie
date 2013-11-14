@@ -8,10 +8,6 @@ require "bowie/utils"
 require "bowie/semver"
 
 module Bowie
-  
-  @songs
-  @local_songs
-  @local_lyrics
 
   # Retrive the online registry of available songs
   def self.get_songs
@@ -63,15 +59,31 @@ module Bowie
 
     if songs.length > 0
       songs.each do |song|
-        name = @songs[song]['name']
-        url = @songs[song]['url']
+        name = Utils.parse_song_name song
+        version = Semver.new(Utils.parse_song_version song)
+        url = @songs[name]['url']
         path = "bowie_songs/#{name}"
 
-        FileUtils.mkdir_p(path)
-        Git.clone(url, path)
+        if File.directory? path
+          self.update(name)
+        else
+          FileUtils.mkdir_p(path)
+          Git.clone(url, path)
+          if version.major != nil
+            g = Git.open(path)
+            begin
+              g.checkout(version.to_s)
+            rescue
+              begin
+                g.checkout(version.to_s :v => true)
+              rescue
+              end
+            end
+          end
+        end
 
-        unless @local_songs.include? song
-          @local_songs.push song
+        unless @local_songs.include? name or @local_songs.include? name+'#'+version.to_s
+          version.major ? @local_songs.push(name+'#'+version.to_s) : @local_songs.push(name)
         end
         File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
       end
@@ -86,12 +98,17 @@ module Bowie
     @local_songs = self.get_local_songs
 
     songs.each do |song|
-      name = @songs[song]['name']
+      name = Utils.parse_song_name song
+      version = Semver.new(Utils.parse_song_version song)
       path = "bowie_songs/#{name}"
 
       FileUtils.rm_rf(path) # use remove_entry_secure for security reasons?
 
-      @local_songs.delete song
+      if version.major != nil
+        @local_songs.delete "#{name}##{version}"
+      else
+        @local_songs.delete_if {|el| not (el =~ /^#{name}#/).nil?}
+      end
       File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
     end
   end
@@ -103,12 +120,27 @@ module Bowie
 
     if songs.length > 0
       songs.each do |song|
-        name = @songs[song]['name']
+        name = Utils.parse_song_name song
+        version = Semver.new(Utils.parse_song_version song)
         path = "bowie_songs/#{name}"
 
         g = Git.open(path, :log => Logger.new(STDOUT))
         g.reset_hard('HEAD')
         g.pull
+        unless version.major.nil?
+          begin
+            g.checkout(version.to_s)
+          rescue
+            begin
+              g.checkout(version.to_s :v => true)
+            rescue
+            end
+          end
+        end
+        @local_songs.delete name
+        @local_songs.delete_if {|el| not (el =~ /^#{name}#/).nil?}
+        version.major ? @local_songs.push(name+'#'+version.to_s) : @local_songs.push(name)
+        File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
       end
     else
       @local_songs.each {|song| self.update(song)}

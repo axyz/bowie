@@ -16,15 +16,19 @@ class Semver
         @minor = Integer v[1]
         @patch = Integer v[2]
       else
-        p 'error'
+        false
       end
     else
-      p 'error'
+      false
     end
   end
 
   def to_s opts = {}
-    opts[:v]? "v#{@major}.#{minor}.#{patch}" : "#{@major}.#{minor}.#{patch}"
+    if(@major.nil? or @minor.nil? or patch.nil?)
+      return ""
+    else
+      opts[:v]? "v#{@major}.#{@minor}.#{@patch}" : "#{@major}.#{@minor}.#{@patch}"
+    end
   end
 
   def bump *type
