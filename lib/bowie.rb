@@ -6,6 +6,7 @@ require "git"
 require "logger"
 require "bowie/utils"
 require "bowie/semver"
+require "bowie/actions"
 
 module Bowie
 
