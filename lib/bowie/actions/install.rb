@@ -1,13 +1,13 @@
 module Bowie
-  module install
+  module Actions
     def self.install(*songs)
-      @songs = self.get_songs
-      @local_songs = self.get_local_songs
+      @songs = SongUtils.get_songs
+      @local_songs = SongUtils.get_local_songs
 
       if songs.length > 0
         songs.each do |song|
-          name = Utils.parse_song_name song
-          version = Semver.new(Utils.parse_song_version song)
+          name = SongUtils.parse_song_name song
+          version = Semver.new(SongUtils.parse_song_version song)
           url = @songs[name]['url']
           path = "bowie_songs/#{name}"
 

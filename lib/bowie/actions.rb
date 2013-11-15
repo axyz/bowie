@@ -1,1 +1,7 @@
-require 'actions/install'
+require 'bowie/song_utils'
+require 'bowie/actions/install'
+require 'bowie/actions/list'
+require 'bowie/actions/prune'
+require 'bowie/actions/search'
+require 'bowie/actions/uninstall'
+require 'bowie/actions/update'

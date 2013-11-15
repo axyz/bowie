@@ -1,47 +1,5 @@
 #!/usr/bin/env ruby
 
 require 'bowie'
-require 'thor'
 
-class BowieCLI < Thor
-
-  @bowie = Bowie.new
-
-  @bowie.get_songs
-  @bowie.get_local_songs
-  @bowie.get_local_lyrics
-  
-  desc "install [song]", "install the selected package"
-  def install(*songs)
-    @bowie.install(*songs)
-  end
-
-  desc "update [song]", "update the selected package"
-  def update(*songs)
-    @bowie.update(*songs)
-  end
-
-  desc "uninstall [song]", "remove the selected package"
-  def uninstall(*songs)
-    @bowie.uninstall(*songs)
-  end
-
-  desc "search [song]", "list all availables packages matching [song]"
-  def search(song)
-    results = @bowie.search(song)
-    results.each { |key, values| puts "#{values['name']}:\n  #{values['description']}" }
-  end
-
-  desc "prune", "remove all the packages not included in songs.yml"
-  def prune
-    @bowie.prune
-  end
-
-  desc "list", "list all the installed packages"
-  def list
-    results = @bowie.list
-    results.each { |key, values| puts "#{values['name']}:\n  #{values['description']}" }
-  end
-end
-
-BowieCLI.start(ARGV)
+Bowie::CLI.start(ARGV)
