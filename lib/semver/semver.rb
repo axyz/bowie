@@ -39,8 +39,11 @@ class Semver
       case type[0]
       when :major
         @major = @major + 1
+        @minor = 0
+        @patch = 0
       when :minor
         @minor = @minor + 1
+        @patch = 0
       when :patch
         @patch = @patch + 1
       else
