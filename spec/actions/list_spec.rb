@@ -1,3 +1,4 @@
-describe "Bowie::Actions.list" do
-
+describe "Bowie::Actions" do
+  it ".list" do
+  end
 end

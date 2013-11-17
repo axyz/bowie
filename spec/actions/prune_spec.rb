@@ -1,3 +1,4 @@
-describe "Bowie::Actions.prune" do
-
+describe "Bowie::Actions" do
+  it ".prune" do
+  end
 end

@@ -1,3 +1,4 @@
-describe "Bowie::Actions.uninstall" do
-
+describe "Bowie::Actions" do
+  it ".uninstall [song]" do
+  end
 end

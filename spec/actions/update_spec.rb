@@ -1,3 +1,4 @@
-describe "Bowie::Actions.update" do
-
+describe "Bowie::Actions" do
+  it ".update" do
+  end
 end
