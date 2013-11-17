@@ -14,8 +14,8 @@ describe "Bowie::Actions.search" do
 
   subject(:query) {Bowie::Actions.search('susy')['susy']}
   it "returns expected results" do
-    query['name'].should eq "susy"
-    query['description'].should eq "A responsive grid framework for Compass"
-    query['url'].should eq "https://github.com/ericam/susy"
+    expect(query['name']).to match "susy"
+    expect(query['description']).to match "A responsive grid framework for Compass"
+    expect(query['url']).to match "https://github.com/ericam/susy"
   end
 end
