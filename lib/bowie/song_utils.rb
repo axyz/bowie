@@ -76,7 +76,16 @@ module Bowie
     end
 
     def self.valid_song?(string)
-      string =~ /^[a-z0-9]+(-?[a-z0-9])*(#\d+.\d+.\d+)?$/
+      (string =~ /^[a-z0-9]+(-?[a-z0-9])*(#\d+.\d+.\d+)?$/) == nil ? false : true
+    end
+
+    def self.valid_lyrics_file?(file)
+      begin
+        f = YAML.load_file file
+        (f.is_a? Hash)? true : false
+      rescue
+        false
+      end
     end
 
     def self.create_empty_songs_file
