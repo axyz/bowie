@@ -7,12 +7,16 @@ module Bowie
 
       songs.each do |song|
         name = SongUtils.parse_song_name song
-        version = Semver.new(SongUtils.parse_song_version song)
+        begin
+          version = Semver.new(SongUtils.parse_song_version song)
+        rescue 
+          version = false
+        end
         path = "bowie_songs/#{name}"
 
         FileUtils.rm_rf(path) # use remove_entry_secure for security reasons?
 
-        if version.major != nil
+        if version
           @local_songs.delete "#{name}##{version}"
         else
           @local_songs.delete_if {|el| not (el =~ /^#{name}#/).nil?}

@@ -76,7 +76,7 @@ module Bowie
     end
 
     def self.valid_song?(string)
-      (string =~ /^[a-z0-9]+(-?[a-z0-9])*(#\d+.\d+.\d+)?$/) == nil ? false : true
+      (string =~ /\A[a-z0-9]+(-?[a-z0-9])*(#\d+.\d+.\d+)?\z/) == nil ? false : true
     end
 
     def self.valid_lyrics_file?(file)

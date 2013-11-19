@@ -7,7 +7,11 @@ module Bowie
       if songs.length > 0
         songs.each do |song|
           name = SongUtils.parse_song_name song
-          version = Semver.new(SongUtils.parse_song_version song)
+          begin
+            version = Semver.new(SongUtils.parse_song_version song)
+          rescue 
+            version = false
+          end
           url = @songs[name]['url']
           path = "bowie_songs/#{name}"
 
@@ -16,7 +20,7 @@ module Bowie
           else
             FileUtils.mkdir_p(path)
             Git.clone(url, path)
-            if version.major != nil
+            if version
               g = Git.open(path)
               begin
                 g.checkout(version.to_s)
@@ -30,7 +34,7 @@ module Bowie
           end
 
           unless @local_songs.include? name or @local_songs.include? name+'#'+version.to_s
-            version.major ? @local_songs.push(name+'#'+version.to_s) : @local_songs.push(name)
+            version ? @local_songs.push(name+'#'+version.to_s) : @local_songs.push(name)
           end
           File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
         end

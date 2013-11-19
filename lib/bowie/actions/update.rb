@@ -8,13 +8,17 @@ module Bowie
       if songs.length > 0
         songs.each do |song|
           name = SongUtils.parse_song_name song
-          version = Semver.new(SongUtils.parse_song_version song)
+          begin
+            version = Semver.new(SongUtils.parse_song_version song)
+          rescue 
+            version = false
+          end
           path = "bowie_songs/#{name}"
 
           g = Git.open(path, :log => Logger.new(STDOUT))
           g.reset_hard('HEAD')
           g.pull
-          unless version.major.nil?
+          unless version
             begin
               g.checkout(version.to_s)
             rescue
@@ -26,7 +30,7 @@ module Bowie
           end
           @local_songs.delete name
           @local_songs.delete_if {|el| not (el =~ /^#{name}#/).nil?}
-          version.major ? @local_songs.push(name+'#'+version.to_s) : @local_songs.push(name)
+          version ? @local_songs.push(name+'#'+version.to_s) : @local_songs.push(name)
           File.open("songs.yml", "w"){|f| YAML.dump(@local_songs, f)}
         end
       else

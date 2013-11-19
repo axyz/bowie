@@ -16,10 +16,10 @@ class Semver
         @minor = Integer v[1]
         @patch = Integer v[2]
       else
-        false
+        raise "invalid semver"
       end
     else
-      false
+      raise ArgumentError
     end
   end
 
@@ -87,6 +87,6 @@ private
 
     # return true if [string] is a valid semantic version in the form x.x.x or vx.x.x
     def valid?(string)
-      (/^v?\d+.\d+.\d+$/ =~ string)? true : false
+      (/\Av?\d+.\d+.\d+\z/ =~ string)? true : false
     end
 end
