@@ -78,4 +78,40 @@ describe "Bowie::SongUtils" do
     end
   end
 
+  context "when a song is correctly installed" do
+    before(:each) do
+      Bowie::Actions.install 'bowie-test'
+    end
+    after(:each) do
+      Bowie::Actions.uninstall 'bowie-test'
+    end
+
+    it ".installed_song?" do
+      expect {Bowie::SongUtils.installed_song? 'bowie-test'}.to_not raise_error
+      expect(Bowie::SongUtils.installed_song? 'bowie-test').to be true
+    end
+  end
+
+  context "when a song is not installed" do
+    it ".installed_song?" do
+      expect {Bowie::SongUtils.installed_song? 'bowie-test'}.to_not raise_error
+      expect(Bowie::SongUtils.installed_song? 'bowie-test').to be false
+    end
+  end
+
+  context "when a song is not correctly installed" do
+    before(:each) do
+      Bowie::Actions.install 'bowie-test'
+      FileUtils.rm_rf('./songs.yml')
+    end
+    after(:each) do
+      Bowie::Actions.uninstall 'bowie-test'
+    end
+
+    it ".installed_song?" do
+      expect {Bowie::SongUtils.installed_song? 'bowie-test'}.to_not raise_error
+      expect(Bowie::SongUtils.installed_song? 'bowie-test').to be false
+    end
+  end
+
 end

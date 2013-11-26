@@ -79,6 +79,20 @@ module Bowie
       (string =~ /\A[a-z0-9]+(-?[a-z0-9])*(#\d+.\d+.\d+)?\z/) == nil ? false : true
     end
 
+    def self.installed_song? (song)
+      @songs = self.get_local_songs
+      @dirs = self.get_songs_dirs
+
+      unless (@songs.grep /#{song}/).empty?
+        if (@dirs.grep /#{song}/).empty?
+          return false
+        else 
+          return true
+        end
+      end
+      return false
+    end
+
     def self.valid_lyrics_file?(file)
       begin
         f = YAML.load_file file
@@ -101,5 +115,6 @@ module Bowie
     def self.create_empty_lyrics_file
       File.open("./bowie_songs/lyrics.yml", "w"){|f| YAML.dump(Hash.new, f)}
     end
+
   end
 end
