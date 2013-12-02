@@ -9,6 +9,7 @@ describe "Bowie::Actions" do
     
     it ".get" do
       expect {Bowie::Actions.get('bowie-test', 'foo')}.to_not raise_error
+      expect(Bowie::Actions.get('bowie-test', 'foo')).to match "bar"
     end
   end
 
