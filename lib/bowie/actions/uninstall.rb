@@ -12,7 +12,7 @@ module Bowie
         rescue 
           version = false
         end
-        path = "bowie_songs/#{name}"
+        path = "#{SongUtils.get_bowie_dir}/#{name}"
 
         FileUtils.rm_rf(path) # use remove_entry_secure for security reasons?
 

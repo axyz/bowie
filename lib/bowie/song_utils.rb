@@ -1,5 +1,15 @@
 module Bowie
   module SongUtils
+
+    def self.get_bowie_dir
+      if File.exist? '.bowierc'
+        f = YAML.load_file '.bowierc'
+        (f['bowie-dir'] == nil) ? (return 'bowie_songs') : (return f['bowie-dir'])
+      else 
+        return 'bowie_songs'
+      end
+    end
+
     # Retrive the online registry of available songs
     def self.get_songs
       begin
@@ -27,11 +37,11 @@ module Bowie
 
     # Retrive the local lyrics file
     def self.get_local_lyrics
-      if File.exist? 'bowie_songs/lyrics.yml'
-        if self.valid_lyrics_file? 'bowie_songs/lyrics.yml'
-          return YAML.load_file('bowie_songs/lyrics.yml')
+      if File.exist? "#{self.get_bowie_dir}/lyrics.yml"
+        if self.valid_lyrics_file? "#{self.get_bowie_dir}/lyrics.yml"
+          return YAML.load_file("#{self.get_bowie_dir}/lyrics.yml")
         else
-          raise "bowie_songs/lyrics.yml is not valid"
+          raise "#{self.get_bowie_dir}/lyrics.yml is not valid"
         end
       else
         self.check_songs_dir
@@ -43,7 +53,7 @@ module Bowie
     # Return an array with all the direcotry inside bowye_songs
     def self.get_songs_dirs
       result = []
-      Dir.foreach('bowie_songs') do |el|
+      Dir.foreach(self.get_bowie_dir) do |el|
         unless (el == "." or el == ".." or el == "lyrics.yml")
           result.push el
         end
@@ -107,13 +117,13 @@ module Bowie
     end
 
     def self.check_songs_dir
-      unless File.directory? 'bowie_songs'
-        FileUtils.mkdir 'bowie_songs'
+      unless File.directory? self.get_bowie_dir
+        FileUtils.mkdir self.get_bowie_dir
       end
     end
 
     def self.create_empty_lyrics_file
-      File.open("./bowie_songs/lyrics.yml", "w"){|f| YAML.dump(Hash.new, f)}
+      File.open("./#{self.get_bowie_dir}/lyrics.yml", "w"){|f| YAML.dump(Hash.new, f)}
     end
 
   end
