@@ -114,4 +114,43 @@ describe "Bowie::SongUtils" do
     end
   end
 
+  context "when .bowierc exist and is valid" do
+    before(:each) do
+      h = Hash.new
+      h["bowie-dir"] = "foo"
+      File.open("./.bowierc", "w"){|f| YAML.dump(h, f)}
+    end
+    after(:each) do
+      FileUtils.rm_rf('./.bowierc')
+    end
+
+    it ".valid_songs_file?" do
+      expect {Bowie::SongUtils.get_bowie_dir}.to_not raise_error
+      expect(Bowie::SongUtils.get_bowie_dir).to match "foo"
+    end
+  end
+
+  context "when .bowierc exist and is not valid" do
+    before(:each) do
+      h = Hash.new
+      h["bowie"] = "foo"
+      File.open("./.bowierc", "w"){|f| YAML.dump(h, f)}
+    end
+    after(:each) do
+      FileUtils.rm_rf('./.bowierc')
+    end
+
+    it ".valid_songs_file?" do
+      expect {Bowie::SongUtils.get_bowie_dir}.to_not raise_error
+      expect(Bowie::SongUtils.get_bowie_dir).to match "bowie_songs"
+    end
+  end
+
+  context "when .bowierc do not exist" do
+    it ".valid_songs_file?" do
+      expect {Bowie::SongUtils.get_bowie_dir}.to_not raise_error
+      expect(Bowie::SongUtils.get_bowie_dir).to match "bowie_songs"
+    end
+  end
+
 end
