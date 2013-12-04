@@ -13,7 +13,7 @@ module Bowie
           rescue 
             version = false
           end
-          path = "bowie_songs/#{name}"
+          path = "#{SongUtils.get_bowie_dir}/#{name}"
 
           g = Git.open(path, :log => Logger.new(STDOUT))
           g.reset_hard('HEAD')

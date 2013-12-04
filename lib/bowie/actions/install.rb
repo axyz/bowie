@@ -13,7 +13,7 @@ module Bowie
             version = false
           end
           url = @songs[name]['url']
-          path = "bowie_songs/#{name}"
+          path = "#{SongUtils.get_bowie_dir}/#{name}"
 
           if File.directory? path
             self.update(name)

@@ -6,7 +6,7 @@ module Bowie
       
       SongUtils.get_songs_dirs.each do |dir|
         unless @local_songs.include? dir
-          FileUtils.rm_rf("bowie_songs/#{dir}")
+          FileUtils.rm_rf("#{SongUtils.get_bowie_dir}/#{dir}")
         end
       end
     end

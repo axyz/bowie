@@ -6,7 +6,7 @@ module Bowie
         raise "song not installed"
       end
       begin
-        @lyrics = YAML.load_file("bowie_songs/#{song}/bowie.yml")
+        @lyrics = YAML.load_file("#{SongUtils.get_bowie_dir}/#{song}/bowie.yml")
       rescue
         raise "bowie.yml not found"
       end
